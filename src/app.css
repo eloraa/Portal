@@ -1,0 +1,117 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 0 0% 3.9%;
+
+		--muted: 0 0% 96.1%;
+		--muted-foreground: 0 0% 45.1%;
+
+		--popover: 0 0% 100%;
+		--popover-foreground: 0 0% 3.9%;
+
+		--card: 0 0% 100%;
+		--card-foreground: 0 0% 3.9%;
+
+		--border: 0 0% 89.8%;
+		--input: 0 0% 89.8%;
+
+		--primary: 122.42 39.44% 49.22%;
+		--primary-foreground: 0 0% 98%;
+
+		--secondary: 0 0% 96.1%;
+		--secondary-foreground: 0 0% 9%;
+
+		--accent: 0 0% 0%;
+		--accent-foreground: 0 0% 9%;
+
+		--destructive: 0 72.2% 50.6%;
+		--destructive-foreground: 0 0% 98%;
+
+		--ring: 0 0% 3.9%;
+		--radius: 0.5rem;
+	}
+
+	.dark {
+		--background: 0 0% 0%;
+		--foreground: 0 0% 98%;
+
+		--muted: 0 0% 14.9%;
+		--muted-foreground: 0 0% 63.9%;
+
+		--popover: 0 0% 19%;
+		--popover-foreground: 0 0% 98%;
+
+		--card: 0 0% 3.9%;
+		--card-foreground: 0 0% 98%;
+
+		--border: 0 0% 14.9%;
+		--input: 0 0% 14.9%;
+
+		--primary: 122.42 39.44% 49.22%;
+		--primary-foreground: 0 0% 9%;
+
+		--secondary: 0 0% 14.9%;
+		--secondary-foreground: 0 0% 98%;
+
+		--accent: 0 100% 100%;
+		--accent-foreground: 0 0% 98%;
+
+		--destructive: 0 85% 30.6%;
+		--destructive-foreground: 0 0% 98%;
+
+		--ring: 122.42 39.44% 49.22%;
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+
+	::selection {
+		@apply bg-primary text-primary-foreground;
+	}
+}
+
+@layer utilities {
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+
+	.no-scrollbar {
+		-ms-overflow-style: none;  /* IE and Edge */
+		scrollbar-width: none;  /* Firefox */
+	}
+
+	.scrollbar-thin {
+		scrollbar-width: thin;
+	}
+	
+	.scrollbar-thumb-accent\/50::-webkit-scrollbar {
+		height: 6px;
+	}
+	
+	.scrollbar-thumb-accent\/50::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	
+	.scrollbar-thumb-accent\/50::-webkit-scrollbar-thumb {
+		background-color: hsl(var(--accent) / 0.5);
+		border-radius: 9999px;
+	}
+
+	.hover\:scrollbar-thumb-accent\/80:hover::-webkit-scrollbar-thumb {
+		background-color: hsl(var(--accent) / 0.8);
+	}
+
+	.scrollbar-track-transparent::-webkit-scrollbar-track {
+		background: transparent;
+	}
+}
