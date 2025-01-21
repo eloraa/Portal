@@ -32,10 +32,8 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
         });
     }
 
-    // Determine the actual theme class for server-side rendering
     let themeClass = theme;
     if (theme === 'system') {
-        // Default to dark for system theme on server
         themeClass = 'dark';
     }
 

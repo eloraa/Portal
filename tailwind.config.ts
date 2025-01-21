@@ -22,7 +22,8 @@ const config: Config = {
 				foreground: 'hsl(var(--foreground) / <alpha-value>)',
 				primary: {
 					DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
-					foreground: 'hsl(var(--primary-foreground) / <alpha-value>)'
+					foreground: 'hsl(var(--primary-foreground) / <alpha-value>)',
+					light: 'hsl(var(--primary-light) / <alpha-value>)'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary) / <alpha-value>)',
@@ -56,6 +57,42 @@ const config: Config = {
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans]
+			},
+
+			keyframes: {
+				'caret-blink': {
+					'0%,70%,100%': {
+						opacity: '1'
+					},
+					'20%,50%': {
+						opacity: '0'
+					}
+				},
+				'loading-color': {
+					'0%, 24%, 25%, 49%': {
+						stroke: '#9f8bf9'
+					},
+					'50%, 74%, 75%, 99%': {
+						stroke: '#8ef684'
+					}
+				},
+				'loading-spacing': {
+					'0%': {
+						strokeDasharray: '0 200'
+					},
+					'45%': {
+						strokeDashoffset: '0',
+						strokeDasharray: '200 200'
+					},
+					'90%, 100%': {
+						strokeDashoffset: '-200',
+						strokeDasharray: '200 200'
+					}
+				}
+			},
+			animation: {
+				'caret-blink': 'caret-blink 1.25s ease-out infinite',
+				loading: 'loading-color 4.8s linear infinite, loading-spacing 1.2s ease-in infinite'
 			}
 		}
 	}

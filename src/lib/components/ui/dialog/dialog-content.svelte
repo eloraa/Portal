@@ -4,10 +4,13 @@
 	import * as Dialog from './index.js';
 	import { cn, flyAndScale } from '$lib/utils.js';
 
-	type $$Props = DialogPrimitive.ContentProps;
+	type $$Props = DialogPrimitive.ContentProps & {
+		noOverlay?: boolean;
+	};
 
 	let className: $$Props['class'] = undefined;
 	export let transition: $$Props['transition'] = flyAndScale;
+	export let noOverlay: $$Props['noOverlay'] = false;
 	export let transitionConfig: $$Props['transitionConfig'] = {
 		duration: 200
 	};
@@ -15,7 +18,9 @@
 </script>
 
 <Dialog.Portal>
-	<Dialog.Overlay />
+	{#if !noOverlay}
+		<Dialog.Overlay />
+	{/if}
 	<DialogPrimitive.Content
 		{transition}
 		{transitionConfig}

@@ -5,8 +5,14 @@
 	import AvatarFallback from '@/components/ui/avatar/avatar-fallback.svelte';
 	import AvatarImage from '@/components/ui/avatar/avatar-image.svelte';
 	import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-	import { Dialog, DialogContent, DialogHeader, DialogDescription } from '@/components/ui/dialog';
-	import { Button } from '@/components/ui/button';
+	import {
+		Dialog,
+		DialogContent,
+		DialogHeader,
+		DialogDescription,
+		DialogTrigger
+	} from '@/components/ui/dialog';
+	import { Button, buttonVariants } from '@/components/ui/button';
 	import { Input } from '@/components/ui/input';
 	import {
 		DropdownMenu,
@@ -30,6 +36,12 @@
 	import { PopoverContent } from '@/components/ui/popover';
 	import { PopoverTrigger } from '@/components/ui/popover';
 	import Scrollbar from '@/components/ui/scrollbar/scrollbar.svelte';
+	import Spinner from '@/components/ui/spinner/spinner.svelte';
+	import { Drawer, DrawerHeader, DrawerTrigger } from '@/components/ui/drawer';
+	import DrawerContent from '@/components/ui/drawer/drawer-content.svelte';
+	import DrawerTitle from '@/components/ui/drawer/drawer-title.svelte';
+	import DrawerDescription from '@/components/ui/drawer/drawer-description.svelte';
+	import DrawerFooter from '@/components/ui/drawer/drawer-footer.svelte';
 
 	interface Props {
 		initialTheme: Theme;
@@ -51,6 +63,8 @@
 	let isDragging = $state(false);
 	let startX = $state(0);
 	let scrollLeft = $state(0);
+
+	let isInstalling = $state(false);
 
 	const avatarOptions = [
 		{ id: 'kazuha', src: '/kazuha.png', color: '#ff5144' },
@@ -177,10 +191,60 @@
 	<a href="/" class="h-16 w-16"><Logo class="h-full w-full" /></a>
 
 	<div class="flex items-center gap-4">
-		{#if showInstallButton}
-			<Button size="icon" onclick={installPWA}>
-				<ArrowDownToLine class="w-5" />
-			</Button>
+		{#if true}
+			<Drawer>
+				<DrawerTrigger class={cn(buttonVariants({ size: 'icon' }))}>
+					<ArrowDownToLine class="w-5" />
+					<span class="sr-only">Install App</span>
+				</DrawerTrigger>
+				<DrawerContent
+					class="mx-auto rounded-t-2xl bg-popover p-4 text-center shadow-2xl md:max-w-sm"
+				>
+					<div
+						class="absolute inset-0 -z-[2] scale-75 rounded-t-2xl bg-primary-light blur-3xl"
+					></div>
+					<div class="absolute inset-0 -z-[1] rounded-t-2xl border bg-popover"></div>
+					<DrawerHeader class="flex items-center justify-center">
+						<figure class="h-16 w-16">
+							<img src="/logo.png" alt="Portal" class="h-full w-full" />
+						</figure>
+					</DrawerHeader>
+					<DrawerTitle class="sr-only">Portal</DrawerTitle>
+					<DrawerDescription class="text-base font-semibold text-foreground">
+						Ready to connect, share, and communicate like never before?
+
+						<p class="text-sm text-muted-foreground">
+							Install now to experience instant file sharing and messaging powered by secure
+							peer-to-peer technology.
+						</p>
+					</DrawerDescription>
+					<DrawerFooter>
+						<Button
+							class="relative rounded-xl bg-transparent text-white hover:bg-accent/15"
+							onclick={async () => {
+								isInstalling = true;
+								try {
+									await installPWA();
+								} finally {
+									isInstalling = false;
+								}
+							}}
+							disabled={isInstalling}
+						>
+							<span
+								class="absolute inset-0 -z-[1] rounded-xl"
+								style="background: linear-gradient(87.81deg, #E6315C 1.77%, #FE013C 24.55%, #FE0140 57.03%, #FE0177 73.99%, #F5466F 98.71%);"
+							></span>
+							{#if !isInstalling}
+								Install Now
+							{/if}
+							{#if isInstalling}
+								<Spinner class="absolute h-4 w-4" />
+							{/if}
+						</Button>
+					</DrawerFooter>
+				</DrawerContent>
+			</Drawer>
 		{/if}
 		<Tooltip openDelay={0}>
 			<TooltipTrigger

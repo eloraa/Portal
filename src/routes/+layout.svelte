@@ -37,23 +37,20 @@
 
 	onMount(() => {
 		if (browser) {
-			// Check if app is installed
 			if (window.matchMedia('(display-mode: standalone)').matches) {
 				showInstallButton = false;
 			}
 
 			if ('serviceWorker' in navigator) {
-				navigator.serviceWorker.register('/service-worker-static.js');
+				navigator.serviceWorker.register('/service-worker.js');
 			}
 
-			// Handle PWA install prompt
 			window.addEventListener('beforeinstallprompt', (e) => {
 				e.preventDefault();
 				deferredPrompt = e;
 				showInstallButton = true;
 			});
 
-			// Hide button after installation
 			window.addEventListener('appinstalled', () => {
 				showInstallButton = false;
 				deferredPrompt = null;
@@ -61,7 +58,6 @@
 		}
 	});
 
-	// Function to handle PWA installation
 	async function installPWA() {
 		if (deferredPrompt) {
 			deferredPrompt.prompt();
