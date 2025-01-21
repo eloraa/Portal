@@ -2,6 +2,15 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@import '@fontsource/dm-mono/300.css';
+@import '@fontsource/dm-mono/400.css';
+@import '@fontsource/dm-mono/500.css';
+
+@import '@fontsource-variable/dm-sans';
+@import '@fontsource/dm-mono/300-italic.css';
+@import '@fontsource/dm-mono/400-italic.css';
+@import '@fontsource/dm-mono/500-italic.css';
+
 @layer base {
 	:root {
 		--background: 0 0% 100%;
@@ -35,6 +44,9 @@
 		--radius: 0.5rem;
 
 		--primary-light: 346 100% 50%;
+
+		--font-sans: 'DM Sans Variable', sans-serif;
+		--font-mono: 'DM Mono', monospace;
 	}
 
 	.dark {
@@ -115,5 +127,12 @@
 
 	.scrollbar-track-transparent::-webkit-scrollbar-track {
 		background: transparent;
+	}
+
+	* {
+		caret-color: hsl(var(--primary-light));
+	}
+	.dark * {
+		caret-color: hsl(var(--accent));
 	}
 }

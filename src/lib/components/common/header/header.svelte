@@ -5,13 +5,7 @@
 	import AvatarFallback from '@/components/ui/avatar/avatar-fallback.svelte';
 	import AvatarImage from '@/components/ui/avatar/avatar-image.svelte';
 	import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-	import {
-		Dialog,
-		DialogContent,
-		DialogHeader,
-		DialogDescription,
-		DialogTrigger
-	} from '@/components/ui/dialog';
+	import { Dialog, DialogContent, DialogHeader, DialogDescription } from '@/components/ui/dialog';
 	import { Button, buttonVariants } from '@/components/ui/button';
 	import { Input } from '@/components/ui/input';
 	import {
@@ -42,14 +36,7 @@
 	import DrawerTitle from '@/components/ui/drawer/drawer-title.svelte';
 	import DrawerDescription from '@/components/ui/drawer/drawer-description.svelte';
 	import DrawerFooter from '@/components/ui/drawer/drawer-footer.svelte';
-
-	interface Props {
-		initialTheme: Theme;
-		initialUsername: string;
-		initialAvatarId: string;
-		installPWA: () => Promise<void>;
-		showInstallButton: boolean;
-	}
+	import GradientBg from '../gradient-bg/gradient-bg.svelte';
 
 	let { initialTheme, initialUsername, initialAvatarId, installPWA, showInstallButton } = $props();
 
@@ -213,14 +200,14 @@
 					<DrawerDescription class="text-base font-semibold text-foreground">
 						Ready to connect, share, and communicate like never before?
 
-						<p class="text-sm text-muted-foreground">
+						<p class="text-sm font-normal text-muted-foreground">
 							Install now to experience instant file sharing and messaging powered by secure
 							peer-to-peer technology.
 						</p>
 					</DrawerDescription>
-					<DrawerFooter>
+					<DrawerFooter class="p-0 py-4">
 						<Button
-							class="relative rounded-xl bg-transparent text-white hover:bg-accent/15"
+							class="relative overflow-hidden rounded-xl bg-transparent text-white hover:bg-accent/15"
 							onclick={async () => {
 								isInstalling = true;
 								try {
@@ -231,10 +218,13 @@
 							}}
 							disabled={isInstalling}
 						>
-							<span
+							<!-- <span
 								class="absolute inset-0 -z-[1] rounded-xl"
 								style="background: linear-gradient(87.81deg, #E6315C 1.77%, #FE013C 24.55%, #FE0140 57.03%, #FE0177 73.99%, #F5466F 98.71%);"
 							></span>
+							 -->
+							<GradientBg class="absolute inset-0 -z-[1] rounded-xl" />
+							<span class="absolute inset-0 -z-[1] rounded-xl bg-accent/15"></span>
 							{#if !isInstalling}
 								Install Now
 							{/if}

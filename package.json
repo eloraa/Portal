@@ -39,6 +39,8 @@
 		"vite": "^5.4.11"
 	},
 	"dependencies": {
+		"@fontsource-variable/dm-sans": "^5.1.1",
+		"@fontsource/dm-mono": "^5.1.1",
 		"@sveltejs/adapter-vercel": "^5.5.3"
 	}
 }
