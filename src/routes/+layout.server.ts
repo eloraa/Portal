@@ -11,9 +11,6 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	let userId = cookies.get('userId');
 
 	if (!userId) {
-		username = generateRandomUsername();
-		avatarId = getRandomAvatarId();
-
 		try {
 			const response = await fetch(`${env.API_URL}/api/users`, {
 				method: 'POST',
@@ -44,6 +41,11 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 		} catch (error) {
 			console.error('Error creating user:', error);
 		}
+	}
+
+	if (!username) {
+		username = generateRandomUsername();
+		avatarId = getRandomAvatarId();
 
 		cookies.set('username', username, {
 			path: '/',
@@ -67,11 +69,14 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 		themeClass = 'dark';
 	}
 
+	
+
 	return {
 		theme,
 		username,
 		avatarId,
 		userId,
-		themeClass
+		themeClass,
+		backendAvailable: Boolean(userId)
 	};
 };

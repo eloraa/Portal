@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { theme } from '@/stores/theme';
+	import { backendAvailable } from '@/stores/backend';
 	import type { Theme } from '@/stores/theme';
 	import { browser } from '$app/environment';
 
@@ -8,12 +9,15 @@
 		theme: Theme;
 		username: string;
 		avatarId: string;
+		backendAvailable: boolean;
 	}
 
 	let { data, children } = $props<{ data: LayoutData }>();
 
 	$effect(() => {
 		if (browser) {
+			backendAvailable.set(data.backendAvailable);
+
 			const root = document.documentElement;
 			root.classList.remove('light', 'dark');
 
