@@ -174,7 +174,7 @@
 	});
 </script>
 
-<header class="container flex items-center justify-between py-2">
+<header class="container sticky top-0 flex items-center justify-between py-2 bg-background z-50">
 	<a href="/" class="h-16 w-16"><Logo class="h-full w-full" /></a>
 
 	<div class="flex items-center gap-4">
