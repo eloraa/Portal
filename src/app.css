@@ -85,12 +85,24 @@
 	* {
 		@apply border-border;
 	}
+
+	html,
+	body {
+		height: 100%;
+	}
 	body {
 		@apply bg-background text-foreground;
 	}
 
 	::selection {
-		@apply bg-primary text-primary-foreground;
+		@apply bg-primary-light text-foreground;
+	}
+
+	::-webkit-scrollbar {
+		width: 6px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: hsl(var(--muted));
 	}
 }
 

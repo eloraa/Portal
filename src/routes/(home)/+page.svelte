@@ -59,7 +59,7 @@
 	});
 </script>
 
-<main class="container relative space-y-6 py-6">
+<main class="container relative my-auto space-y-6 py-6">
 	<h1 class="relative text-2xl md:text-6xl">
 		Easily and Securely connect <span>
 			<img
@@ -137,7 +137,7 @@
 	</div>
 
 	<div class="grid text-sm md:max-w-4xl md:grid-cols-3">
-		<div class="flex h-full flex-col border-accent/15 max-md:py-4 md:border-r md:p-4">
+		<div class="flex h-full flex-col border-accent/15 max-md:py-4 md:border-r md:p-4 md:pl-0">
 			<div class="flex items-center gap-2">
 				<figure class="h-8 w-8">
 					<img src="/lock.png" alt="Secure" class="h-full w-full" />
@@ -152,9 +152,9 @@
 		<div class="flex h-full flex-col border-accent/15 max-md:py-4 md:border-r md:p-4">
 			<div class="flex items-center gap-2">
 				<figure class="h-8 w-8">
-					<img src="/zap.png" alt="Secure" class="h-full w-full" />
+					<img src="/zap.png" alt="Zap" class="h-full w-full" />
 				</figure>
-				<h1 class="font-mono font-medium uppercase">Secure Connections</h1>
+				<h1 class="font-mono font-medium uppercase">Lightning-Fast Sharing</h1>
 			</div>
 			<p class="ml-0.5 mt-2 text-foreground/60 dark:font-light">
 				Share files instantly without delays, no matter the size.
@@ -164,7 +164,7 @@
 		<div class="flex h-full flex-col max-md:py-4 md:p-4">
 			<div class="flex items-center gap-2">
 				<figure class="h-8 w-8">
-					<img src="/globe.png" alt="Secure" class="h-full w-full" />
+					<img src="/globe.png" alt="Globe" class="h-full w-full" />
 				</figure>
 				<h1 class="font-mono font-medium uppercase">Connect Anywhere, Anytime</h1>
 			</div>

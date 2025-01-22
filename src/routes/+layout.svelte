@@ -1,10 +1,8 @@
 <script lang="ts">
-	import Header from '@/components/common/header/header.svelte';
 	import '../app.css';
 	import { theme } from '@/stores/theme';
 	import type { Theme } from '@/stores/theme';
 	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
 
 	interface LayoutData {
 		theme: Theme;
@@ -13,8 +11,6 @@
 	}
 
 	let { data, children } = $props<{ data: LayoutData }>();
-	let deferredPrompt: any;
-	let showInstallButton = $state(false);
 
 	$effect(() => {
 		if (browser) {
@@ -34,40 +30,6 @@
 		}
 		theme.set(data.theme);
 	});
-
-	onMount(() => {
-		if (browser) {
-			if (window.matchMedia('(display-mode: standalone)').matches) {
-				showInstallButton = false;
-			}
-
-			if ('serviceWorker' in navigator) {
-				navigator.serviceWorker.register('/service-worker.js');
-			}
-
-			window.addEventListener('beforeinstallprompt', (e) => {
-				e.preventDefault();
-				deferredPrompt = e;
-				showInstallButton = true;
-			});
-
-			window.addEventListener('appinstalled', () => {
-				showInstallButton = false;
-				deferredPrompt = null;
-			});
-		}
-	});
-
-	async function installPWA() {
-		if (deferredPrompt) {
-			deferredPrompt.prompt();
-			const { outcome } = await deferredPrompt.userChoice;
-			deferredPrompt = null;
-			if (outcome === 'accepted') {
-				showInstallButton = false;
-			}
-		}
-	}
 </script>
 
 <svelte:head>
@@ -78,11 +40,4 @@
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 </svelte:head>
 
-<Header
-	initialTheme={data.theme}
-	initialUsername={data.username}
-	initialAvatarId={data.avatarId}
-	{installPWA}
-	{showInstallButton}
-/>
 {@render children()}

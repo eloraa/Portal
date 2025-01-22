@@ -37,12 +37,12 @@
 	import DrawerDescription from '@/components/ui/drawer/drawer-description.svelte';
 	import DrawerFooter from '@/components/ui/drawer/drawer-footer.svelte';
 	import GradientBg from '../gradient-bg/gradient-bg.svelte';
-
-	let { initialTheme, initialUsername, initialAvatarId, installPWA, showInstallButton } = $props();
+	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
 
 	let isDialogOpen = $state(false);
-	let username = $state(initialUsername);
-	let selectedTheme = $state(initialTheme);
+	let username = $state($page.data.username);
+	let selectedTheme = $state($page.data.theme);
 	let usernameError = $state('');
 	let showUsernameError = $state(false);
 
@@ -52,6 +52,8 @@
 	let scrollLeft = $state(0);
 
 	let isInstalling = $state(false);
+	let deferredPrompt: any;
+	let showInstallButton = $state(false);
 
 	const avatarOptions = [
 		{ id: 'kazuha', src: '/kazuha.png', color: '#ff5144' },
@@ -67,7 +69,7 @@
 		return avatar?.src || '/kazuha.png';
 	}
 
-	let selectedAvatar = $state(getAvatarSrcFromId(initialAvatarId));
+	let selectedAvatar = $state(getAvatarSrcFromId($page.data.avatarId));
 
 	function validateUsername(value: string) {
 		if (value.length < 1) {
@@ -148,7 +150,37 @@
 	}
 
 	$effect(() => {
+		if (browser) {
+			const root = document.documentElement;
+			root.classList.remove('light', 'dark');
+
+			if (selectedTheme === 'system') {
+				const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+					? 'dark'
+					: 'light';
+				root.classList.add(systemTheme);
+				root.style.colorScheme = systemTheme;
+			} else {
+				root.classList.add(selectedTheme);
+				root.style.colorScheme = selectedTheme;
+			}
+		}
 		theme.set(selectedTheme);
+
+		if (window.matchMedia('(display-mode: standalone)').matches) {
+			showInstallButton = false;
+		}
+
+		window.addEventListener('beforeinstallprompt', (e) => {
+			e.preventDefault();
+			deferredPrompt = e;
+			showInstallButton = true;
+		});
+
+		window.addEventListener('appinstalled', () => {
+			showInstallButton = false;
+			deferredPrompt = null;
+		});
 	});
 
 	onMount(() => {
@@ -172,10 +204,21 @@
 			document.removeEventListener('mouseleave', handleMouseUp);
 		};
 	});
+
+	async function installPWA() {
+		if (deferredPrompt) {
+			deferredPrompt.prompt();
+			const { outcome } = await deferredPrompt.userChoice;
+			deferredPrompt = null;
+			if (outcome === 'accepted') {
+				showInstallButton = false;
+			}
+		}
+	}
 </script>
 
-<header class="container sticky top-0 flex items-center justify-between py-2 bg-background z-50">
-	<a href="/" class="h-16 w-16"><Logo class="h-full w-full" /></a>
+<header class="container relative z-50 flex items-center justify-between py-2">
+	<a href="/" class="h-16 w-16"><Logo class="-ml-2 h-full w-full" /></a>
 
 	<div class="flex items-center gap-4">
 		{#if true}
