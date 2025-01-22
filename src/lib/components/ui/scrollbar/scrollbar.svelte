@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { cn } from '@/utils';
+	import { lerp } from '@/index';
 
     interface Props {
         container: HTMLElement | null;
@@ -17,9 +18,6 @@
     let targetPercentage = $state(0);
     let animationFrame: number;
 
-    function lerp(start: number, end: number, factor: number) {
-        return start + (end - start) * factor;
-    }
 
     function updateThumbPosition() {
         if (Math.abs(targetPercentage - scrollPercentage) < 0.1) {
