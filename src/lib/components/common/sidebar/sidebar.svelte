@@ -9,14 +9,14 @@
 	let hoveringSiblings = $state(false);
 </script>
 
-<div class="w-sidebar sticky top-16 h-[calc(100vh-4rem)] max-md:hidden">
+<div class="w-sidebar relative top-16 h-[calc(100vh-4rem)] px-4 max-md:hidden">
 	<ul class="-mx-3">
 		<li>
 			<Button
 				variant="ghost"
 				size="sm"
 				class={cn(
-					'flex items-center gap-1 pr-4',
+					'flex items-center gap-1 pr-3.5',
 					page.url?.pathname.includes('/dashboard') && !hoveringSiblings && 'bg-accent/10'
 				)}
 				onmouseover={() => (hoveringSiblings = true)}
@@ -30,7 +30,7 @@
 			<Button
 				variant="ghost"
 				size="sm"
-				class="flex items-center gap-1 pr-4"
+				class="flex items-center gap-1 pr-3.5"
 				onmouseover={() => (hoveringSiblings = true)}
 				onmouseleave={() => (hoveringSiblings = false)}
 			>

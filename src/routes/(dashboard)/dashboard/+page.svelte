@@ -3,7 +3,9 @@
 </script>
 
 <div class="relative flex h-full flex-col">
-	<div class="pointer-events-none absolute inset-0 -z-[1] origin-top scale-90 xl:scale-150">
+	<div
+		class="pointer-events-none fixed inset-0 -z-[1] ml-auto w-[calc(100%-195px)] origin-top scale-90 xl:scale-150"
+	>
 		<div class="rayOne bg-light-ray-primary absolute rounded-full"></div>
 		<div class="rayTwo bg-light-ray absolute rounded-full"></div>
 		<div class="rayThree bg-light-ray absolute rounded-full"></div>

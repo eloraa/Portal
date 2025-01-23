@@ -12,9 +12,9 @@
 	</div>
 	<div class="relative z-10 h-full w-full bg-background">
 		<Header />
-		<div class="absolute flex h-full w-full px-4">
+		<div class="absolute flex h-full w-full">
 			<Sidebar />
-			<div class="flex-1">
+			<div class="flex-1 overflow-y-auto overflow-x-hidden px-4">
 				{@render children()}
 			</div>
 		</div>
