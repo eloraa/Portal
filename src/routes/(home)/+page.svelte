@@ -7,7 +7,7 @@
 	import { user } from '@/stores/user';
 
 	let inputRefs = Array(8).fill(null);
-	let values = Array(8).fill('');
+	let values = $state(Array(8).fill(''));
 
 	function handlePaste(event: ClipboardEvent, index: number) {
 		event.preventDefault();
@@ -84,6 +84,8 @@
 			inputRefs[0].focus();
 		}
 	});
+
+	const { hideFeature } = $props<{ hideFeature: boolean }>();
 </script>
 
 <main class="container relative my-auto space-y-6 py-6">
@@ -121,88 +123,94 @@
 	</h1>
 
 	<div>
-		<div class="flex">
-			<div
-				class="group relative flex h-12 items-center justify-center overflow-hidden rounded-md border border-accent/60 focus-within:ring-2 focus-within:ring-primary/15 md:h-14"
+		<div>
+			<div class="inline-flex">
+				<div
+					class="group relative flex h-12 items-center justify-center overflow-hidden rounded-md border border-accent/60 focus-within:ring-2 focus-within:ring-primary/15 md:h-14"
+				>
+					<GradientBg className="w-full h-[1001px] absolute opacity-15 -z-[1]" />
+
+					<ul class="flex h-full w-full">
+						{#each Array(8) as _, i}
+							<li class="h-full {i < 7 ? 'border-r' : ''} border-accent/60 md:w-14">
+								<input
+									bind:this={inputRefs[i]}
+									bind:value={values[i]}
+									oninput={(e) => handleInput(e, i)}
+									onpaste={(e) => handlePaste(e, i)}
+									onkeydown={(e) => handleKeydown(e, i)}
+									maxlength={1}
+									type="text"
+									class="h-full w-full bg-transparent text-center font-mono outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 active:outline-none"
+								/>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div>
+			<Button
+				class="relative mt-4 h-12 w-full overflow-hidden rounded-md bg-transparent text-base text-white hover:bg-accent/15 md:max-w-md"
 			>
-				<GradientBg className="w-full h-[1001px] absolute opacity-15 -z-[1]" />
+				<span
+					class="absolute inset-0 -z-[1] rounded-md"
+					style="background: linear-gradient(87.81deg, #E6315C 1.77%, #FE013C 24.55%, #FE0140 57.03%, #FE0177 73.99%, #F5466F 98.71%);"
+				></span>
 
-				<ul class="flex h-full w-full">
-					{#each Array(8) as _, i}
-						<li class="h-full {i < 7 ? 'border-r' : ''} border-accent/60 md:w-14">
-							<input
-								bind:this={inputRefs[i]}
-								bind:value={values[i]}
-								on:input={(e) => handleInput(e, i)}
-								on:paste={(e) => handlePaste(e, i)}
-								on:keydown={(e) => handleKeydown(e, i)}
-								maxlength={1}
-								type="text"
-								class="h-full w-full bg-transparent text-center font-mono outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 active:outline-none"
-							/>
-						</li>
-					{/each}
-				</ul>
-			</div>
+				<!-- <GradientBg class="absolute inset-0 -z-[1] rounded-md" /> -->
+				Join a Portal
+			</Button>
 		</div>
-
-		<Button
-			class="relative mt-4 h-12 w-full overflow-hidden rounded-md bg-transparent text-base text-white hover:bg-accent/15 md:max-w-md"
-		>
-			<span
-				class="absolute inset-0 -z-[1] rounded-md"
-				style="background: linear-gradient(87.81deg, #E6315C 1.77%, #FE013C 24.55%, #FE0140 57.03%, #FE0177 73.99%, #F5466F 98.71%);"
-			></span>
-
-			<!-- <GradientBg class="absolute inset-0 -z-[1] rounded-md" /> -->
-			Join a Portal
-		</Button>
-
-		<Button
-			class="relative mt-2 flex h-12 w-full overflow-hidden rounded-md text-base md:max-w-md"
-			on:click={createRoom}
-		>
-			Start a New Portal
-		</Button>
-	</div>
-
-	<div class="grid text-sm md:max-w-4xl md:grid-cols-3">
-		<div class="flex h-full flex-col border-accent/15 max-md:py-4 md:border-r md:p-4 md:pl-0">
-			<div class="flex items-center gap-2">
-				<figure class="h-8 w-8">
-					<img src="/lock.png" alt="Secure" class="h-full w-full" />
-				</figure>
-				<h1 class="font-mono font-medium uppercase">Secure Connections</h1>
-			</div>
-			<p class="ml-0.5 mt-2 text-foreground/60 dark:font-light">
-				Protect your data with end-to-end encryption, ensuring total privacy.
-			</p>
-		</div>
-
-		<div class="flex h-full flex-col border-accent/15 max-md:py-4 md:border-r md:p-4">
-			<div class="flex items-center gap-2">
-				<figure class="h-8 w-8">
-					<img src="/zap.png" alt="Zap" class="h-full w-full" />
-				</figure>
-				<h1 class="font-mono font-medium uppercase">Lightning-Fast Sharing</h1>
-			</div>
-			<p class="ml-0.5 mt-2 text-foreground/60 dark:font-light">
-				Share files instantly without delays, no matter the size.
-			</p>
-		</div>
-
-		<div class="flex h-full flex-col max-md:py-4 md:p-4">
-			<div class="flex items-center gap-2">
-				<figure class="h-8 w-8">
-					<img src="/globe.png" alt="Globe" class="h-full w-full" />
-				</figure>
-				<h1 class="font-mono font-medium uppercase">Connect Anywhere, Anytime</h1>
-			</div>
-			<p class="ml-0.5 mt-2 text-foreground/60 dark:font-light">
-				Seamlessly link with peers worldwide need. flex-col
-			</p>
+		<div>
+			<Button
+				class="inine-flex relative mt-2 h-12 w-full overflow-hidden rounded-md text-base md:max-w-md"
+				on:click={createRoom}
+			>
+				Start a New Portal
+			</Button>
 		</div>
 	</div>
+
+	{#if !hideFeature}
+		<div class="grid text-sm md:max-w-4xl md:grid-cols-3">
+			<div class="flex h-full flex-col border-accent/15 max-md:py-4 md:border-r md:p-4 md:pl-0">
+				<div class="flex items-center gap-2">
+					<figure class="h-8 w-8">
+						<img src="/lock.png" alt="Secure" class="h-full w-full" />
+					</figure>
+					<h1 class="font-mono font-medium uppercase">Secure Connections</h1>
+				</div>
+				<p class="ml-0.5 mt-2 text-foreground/60 dark:font-light">
+					Protect your data with end-to-end encryption, ensuring total privacy.
+				</p>
+			</div>
+
+			<div class="flex h-full flex-col border-accent/15 max-md:py-4 md:border-r md:p-4">
+				<div class="flex items-center gap-2">
+					<figure class="h-8 w-8">
+						<img src="/zap.png" alt="Zap" class="h-full w-full" />
+					</figure>
+					<h1 class="font-mono font-medium uppercase">Lightning-Fast Sharing</h1>
+				</div>
+				<p class="ml-0.5 mt-2 text-foreground/60 dark:font-light">
+					Share files instantly without delays, no matter the size.
+				</p>
+			</div>
+
+			<div class="flex h-full flex-col max-md:py-4 md:p-4">
+				<div class="flex items-center gap-2">
+					<figure class="h-8 w-8">
+						<img src="/globe.png" alt="Globe" class="h-full w-full" />
+					</figure>
+					<h1 class="font-mono font-medium uppercase">Connect Anywhere, Anytime</h1>
+				</div>
+				<p class="ml-0.5 mt-2 text-foreground/60 dark:font-light">
+					Seamlessly link with peers worldwide need. flex-col
+				</p>
+			</div>
+		</div>
+	{/if}
 </main>
 
 <style>

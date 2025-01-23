@@ -50,6 +50,10 @@ const config: Config = {
 					foreground: 'hsl(var(--card-foreground) / <alpha-value>)'
 				}
 			},
+			backgroundImage: {
+				'light-ray': 'radial-gradient(hsl(var(--primary-light)) 0%, rgba(43, 166, 255, 0) 100%)',
+				'light-ray-primary': 'radial-gradient(hsl(var(--primary)) 0%, rgba(43, 166, 255, 0) 100%)'
+			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',

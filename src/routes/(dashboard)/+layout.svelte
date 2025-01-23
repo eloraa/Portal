@@ -10,7 +10,7 @@
 	<div class="inset fixed -z-[1] h-screen min-h-screen w-screen min-w-full">
 		<GradientBg class="absolute inset-0 -z-[1] h-full w-full min-w-[100vh]" />
 	</div>
-	<div class="relative h-full w-full bg-background">
+	<div class="relative z-10 h-full w-full bg-background">
 		<Header />
 		<div class="absolute flex h-full w-full px-4">
 			<Sidebar />
