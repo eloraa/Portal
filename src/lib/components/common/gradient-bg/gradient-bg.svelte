@@ -70,13 +70,22 @@
 		const y = `calc(${yPosition}% + 50% * ${scale} * sin(${rotation + 90 * i}deg))`;
 		return `radial-gradient(circle at ${x} ${y}, hsl(${90 * i - 15}, 100%, 50%), transparent)`;
 	}).join(', ');
+
+	$: transform = (() => {
+		if (browser && gradientDiv) {
+			const computedStyle = getComputedStyle(gradientDiv);
+			const existingTransform = computedStyle.transform === 'none' ? '' : computedStyle.transform;
+			const inlineTransform = $$restProps.style?.transform || '';
+			return `rotate(90deg) ${existingTransform} ${inlineTransform}`.trim();
+		}
+	})();
 </script>
 
 <div
 	bind:this={gradientDiv}
 	class={cn('gradient-div relative', className)}
 	style:background={gradientBackground}
-	style:transform="rotate(90deg)"
+	style:transform
 	{...$$restProps}
 >
 	<slot />

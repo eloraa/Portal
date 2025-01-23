@@ -59,7 +59,9 @@ const config: Config = {
 				sans: ['var(--font-sans)', ...fontFamily.sans],
 				mono: ['var(--font-mono)', ...fontFamily.mono]
 			},
-
+			width: {
+				sidebar: 'var(--sidebar-width)'
+			},
 			keyframes: {
 				'caret-blink': {
 					'0%,70%,100%': {

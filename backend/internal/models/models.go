@@ -8,6 +8,7 @@ type User struct {
 
 type Room struct {
 	ID       string                     // Unique room identifier
+	Name     string                     // Room name (e.g., FluffyCookie)
 	Creator  string                     // ID of the room creator
 	IsPublic bool                       // Visibility (true = public, false = private)
 	Password string                     // Password for private rooms

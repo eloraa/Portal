@@ -2,6 +2,9 @@
 	import GradientBg from '@/components/common/gradient-bg/gradient-bg.svelte';
 	import { Button } from '@/components/ui/button';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { PUBLIC_API_URL } from '$env/static/public';
+	import { user } from '@/stores/user';
 
 	let inputRefs = Array(8).fill(null);
 	let values = Array(8).fill('');
@@ -49,6 +52,30 @@
 				values[index] = '';
 				values = values;
 			}
+		}
+	}
+
+	async function createRoom() {
+		try {
+			const response = await fetch(`${PUBLIC_API_URL}/api/rooms`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					isPublic: true,
+					userId: $user.userId
+				})
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to create room');
+			}
+
+			const data = await response.json();
+			goto(`/room/${data.roomId}`);
+		} catch (error) {
+			console.error('Error creating room:', error);
 		}
 	}
 
@@ -131,7 +158,10 @@
 			Join a Portal
 		</Button>
 
-		<Button class="relative mt-2 flex h-12 w-full overflow-hidden rounded-md text-base md:max-w-md">
+		<Button
+			class="relative mt-2 flex h-12 w-full overflow-hidden rounded-md text-base md:max-w-md"
+			on:click={createRoom}
+		>
 			Start a New Portal
 		</Button>
 	</div>

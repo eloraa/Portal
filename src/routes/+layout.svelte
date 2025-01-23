@@ -4,11 +4,14 @@
 	import { backendAvailable } from '@/stores/backend';
 	import type { Theme } from '@/stores/theme';
 	import { browser } from '$app/environment';
+	import { user } from '@/stores/user';
+	import { onMount } from 'svelte';
 
 	interface LayoutData {
 		theme: Theme;
 		username: string;
 		avatarId: string;
+		userId: string;
 		backendAvailable: boolean;
 	}
 
@@ -16,6 +19,14 @@
 
 	$effect(() => {
 		if (browser) {
+			// Initialize user store first
+			user.set({
+				username: data.username,
+				avatarId: data.avatarId,
+				userId: data.userId
+			});
+
+			// Then handle theme and backend
 			backendAvailable.set(data.backendAvailable);
 
 			const root = document.documentElement;
@@ -31,8 +42,21 @@
 				root.classList.add(data.theme);
 				root.style.colorScheme = data.theme;
 			}
+
+			theme.set(data.theme);
 		}
-		theme.set(data.theme);
+	});
+
+	onMount(() => {
+		if ($theme === 'system') {
+			const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+			const handleChange = (e: MediaQueryListEvent) => {
+				document.documentElement.classList.remove('light', 'dark');
+				document.documentElement.classList.add(e.matches ? 'dark' : 'light');
+			};
+			mediaQuery.addEventListener('change', handleChange);
+			return () => mediaQuery.removeEventListener('change', handleChange);
+		}
 	});
 </script>
 

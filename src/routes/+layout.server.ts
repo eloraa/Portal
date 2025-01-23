@@ -2,6 +2,7 @@ import type { LayoutServerLoad } from './$types';
 import type { Theme } from '@/stores/theme';
 import { generateRandomUsername, getRandomAvatarId } from '@/consts';
 import { env } from '$env/dynamic/private';
+import { backendHealthChecker } from '@/index';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
 	const theme = (cookies.get('theme') || 'dark') as Theme;
@@ -9,6 +10,8 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	let username = cookies.get('username');
 	let avatarId = cookies.get('avatarId');
 	let userId = cookies.get('userId');
+
+	const backendAvailable = await backendHealthChecker(env.API_URL);
 
 	if (!userId) {
 		try {
@@ -69,14 +72,12 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 		themeClass = 'dark';
 	}
 
-	
-
 	return {
 		theme,
 		username,
 		avatarId,
 		userId,
 		themeClass,
-		backendAvailable: Boolean(userId)
+		backendAvailable: Boolean(backendAvailable)
 	};
 };

@@ -33,6 +33,15 @@ const nouns = [
 
 const avatarIds = ['kazuha', 'diluc', 'ganyu', 'hutao', 'shotgun', 'shenhe'];
 
+export 	const avatars = [
+    { id: 'kazuha', src: '/kazuha.png', color: '#ff5144' },
+    { id: 'diluc', src: '/diluc.png', color: '#6d2626' },
+    { id: 'ganyu', src: '/ganyu.png', color: '#3F51B5' },
+    { id: 'hutao', src: '/hutao.png', color: '#a51308' },
+    { id: 'shotgun', src: '/shotgun.png', color: '#673AB7' },
+    { id: 'shenhe', src: '/shenhe.png', color: '#175d7d' }
+];
+
 export function generateRandomUsername(): string {
     const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
     const noun = nouns[Math.floor(Math.random() * nouns.length)];
