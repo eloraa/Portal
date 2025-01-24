@@ -12,8 +12,10 @@
 	import ArrowDownToLine from 'lucide-svelte/icons/arrow-down-to-line';
 	import { pwa, installPWA } from '@/stores/pwa';
 	import Spinner from '@/components/ui/spinner/spinner.svelte';
+	import Scrollbar from '@/components/ui/scrollbar/scrollbar.svelte';
 
 	let hoveringSiblings = $state(false);
+	let roomListContainer = $state<HTMLElement | null>(null);
 </script>
 
 <div class="w-sidebar relative top-16 flex h-[calc(100vh-4rem)] flex-col px-4 max-md:hidden">
@@ -56,7 +58,19 @@
 			<span class="sr-only">Add a new Room</span>
 		</Button>
 	</div>
-	<ul class="-mx-3 overflow-y-auto overflow-x-hidden text-sm">
+	<ul
+		bind:this={roomListContainer}
+		class="no-scrollbar relative -mx-3 flex-1 overflow-y-auto overflow-x-hidden pr-4 text-sm"
+	>
+		<div class="sticky top-0 float-right -mr-4 h-full">
+			<div class="absolute right-0 top-0 h-full px-1 py-2">
+				<Scrollbar
+					container={roomListContainer}
+					orientation="vertical"
+					class="scale-y-105 rounded-none opacity-60 hover:opacity-100 focus-visible:opacity-100 [&_button]:!rounded-none"
+				/>
+			</div>
+		</div>
 		{#each rooms as room}
 			<li class="flex overflow-hidden py-0.5">
 				<a href={'/room/' + room.id} class="w-full">
