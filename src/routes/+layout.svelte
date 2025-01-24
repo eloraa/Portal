@@ -6,6 +6,8 @@
 	import { browser } from '$app/environment';
 	import { user } from '@/stores/user';
 	import { onMount } from 'svelte';
+	import { pwa } from '@/stores/pwa';
+	import type { BeforeInstallPromptEvent } from '@/stores/pwa';
 
 	interface LayoutData {
 		theme: Theme;
@@ -19,14 +21,12 @@
 
 	$effect(() => {
 		if (browser) {
-			// Initialize user store first
 			user.set({
 				username: data.username,
 				avatarId: data.avatarId,
 				userId: data.userId
 			});
 
-			// Then handle theme and backend
 			backendAvailable.set(data.backendAvailable);
 
 			const root = document.documentElement;
@@ -57,6 +57,21 @@
 			mediaQuery.addEventListener('change', handleChange);
 			return () => mediaQuery.removeEventListener('change', handleChange);
 		}
+
+		if (window.matchMedia('(display-mode: standalone)').matches) {
+			pwa.setShowInstallButton(false);
+		}
+
+		window.addEventListener('beforeinstallprompt', (e: Event) => {
+			e.preventDefault();
+			pwa.setDeferredPrompt(e as BeforeInstallPromptEvent);
+			pwa.setShowInstallButton(true);
+		});
+
+		window.addEventListener('appinstalled', () => {
+			pwa.setShowInstallButton(false);
+			pwa.setDeferredPrompt(null);
+		});
 	});
 </script>
 

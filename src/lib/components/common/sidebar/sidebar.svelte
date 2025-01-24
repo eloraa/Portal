@@ -5,26 +5,35 @@
 	import Plus from 'lucide-svelte/icons/plus';
 	import { cn } from '@/utils';
 	import { page } from '$app/state';
+	import { rooms } from '@/consts';
+	import { Tooltip, TooltipTrigger } from '@/components/ui/tooltip';
+	import { buttonVariants } from '@/components/ui/button';
+	import TooltipContent from '@/components/ui/tooltip/tooltip-content.svelte';
+	import ArrowDownToLine from 'lucide-svelte/icons/arrow-down-to-line';
+	import { pwa, installPWA } from '@/stores/pwa';
+	import Spinner from '@/components/ui/spinner/spinner.svelte';
 
 	let hoveringSiblings = $state(false);
 </script>
 
-<div class="w-sidebar relative top-16 h-[calc(100vh-4rem)] px-4 max-md:hidden">
+<div class="w-sidebar relative top-16 flex h-[calc(100vh-4rem)] flex-col px-4 max-md:hidden">
 	<ul class="-mx-3">
 		<li>
-			<Button
-				variant="ghost"
-				size="sm"
-				class={cn(
-					'flex items-center gap-1 pr-3.5',
-					page.url?.pathname.includes('/dashboard') && !hoveringSiblings && 'bg-accent/10'
-				)}
-				onmouseover={() => (hoveringSiblings = true)}
-				onmouseleave={() => (hoveringSiblings = false)}
-			>
-				<Home class="w-4" />
-				Home
-			</Button>
+			<a href="/dashboard">
+				<Button
+					variant="ghost"
+					size="sm"
+					class={cn(
+						'flex items-center gap-1 pr-3.5',
+						page.url?.pathname.includes('/dashboard') && !hoveringSiblings && 'bg-accent/10'
+					)}
+					onmouseover={() => (hoveringSiblings = true)}
+					onmouseleave={() => (hoveringSiblings = false)}
+				>
+					<Home class="w-4" />
+					Home
+				</Button>
+			</a>
 		</li>
 		<li>
 			<Button
@@ -47,5 +56,53 @@
 			<span class="sr-only">Add a new Room</span>
 		</Button>
 	</div>
-	<ul class="-mx-2"></ul>
+	<ul class="-mx-3 space-y-0.5 text-sm">
+		{#each rooms as room}
+			<li class="flex overflow-hidden">
+				<a href={'/room/' + room.id} class="w-full">
+					<Tooltip openDelay={200}>
+						<TooltipTrigger
+							class={cn(
+								buttonVariants({ size: 'sm', variant: 'ghost' }),
+								'flex max-w-full items-center gap-3 overflow-hidden truncate rounded-lg pr-3.5 font-normal dark:font-light',
+								page.params?.id === room.id && 'bg-accent/5'
+							)}
+						>
+							{room.name}
+							<span
+								class="min-w-0 truncate border p-0.5 font-mono text-xs leading-tight text-foreground/80 dark:text-foreground/60"
+								>{room.id}</span
+							>
+						</TooltipTrigger>
+						<TooltipContent>{room.id}</TooltipContent>
+					</Tooltip>
+				</a>
+			</li>
+		{/each}
+	</ul>
+	{#if true}
+		<div class="-mx-3 mt-auto py-4">
+			<Button
+				class="gap-1 bg-transparent hover:bg-accent/10"
+				size="sm"
+				onclick={async () => {
+					pwa.setInstalling(true);
+					try {
+						await installPWA();
+					} finally {
+						pwa.setInstalling(false);
+					}
+				}}
+				disabled={$pwa.isInstalling}
+			>
+				{#if $pwa.isInstalling}
+					<Spinner class="h-4 w-4" />
+					Installing...
+				{:else}
+					<ArrowDownToLine class="h-4 w-4" />
+					Install Portal
+				{/if}
+			</Button>
+		</div>
+	{/if}
 </div>

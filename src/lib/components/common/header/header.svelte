@@ -12,38 +12,9 @@
 	import DrawerFooter from '@/components/ui/drawer/drawer-footer.svelte';
 	import GradientBg from '../gradient-bg/gradient-bg.svelte';
 	import User from '../user/user.svelte';
+	import { pwa, installPWA } from '@/stores/pwa';
 
-	let isInstalling = $state(false);
-	let deferredPrompt: any;
-	let showInstallButton = $state(false);
-
-	$effect(() => {
-		if (window.matchMedia('(display-mode: standalone)').matches) {
-			showInstallButton = false;
-		}
-
-		window.addEventListener('beforeinstallprompt', (e) => {
-			e.preventDefault();
-			deferredPrompt = e;
-			showInstallButton = true;
-		});
-
-		window.addEventListener('appinstalled', () => {
-			showInstallButton = false;
-			deferredPrompt = null;
-		});
-	});
-
-	async function installPWA() {
-		if (deferredPrompt) {
-			deferredPrompt.prompt();
-			const { outcome } = await deferredPrompt.userChoice;
-			deferredPrompt = null;
-			if (outcome === 'accepted') {
-				showInstallButton = false;
-			}
-		}
-	}
+	// Remove the old PWA-related state and effects
 </script>
 
 <header class="container relative z-50 flex items-center justify-between py-2">
@@ -81,14 +52,14 @@
 						<Button
 							class="relative overflow-hidden rounded-xl bg-transparent text-white hover:bg-accent/15"
 							onclick={async () => {
-								isInstalling = true;
+								pwa.setInstalling(true);
 								try {
 									await installPWA();
 								} finally {
-									isInstalling = false;
+									pwa.setInstalling(false);
 								}
 							}}
-							disabled={isInstalling}
+							disabled={$pwa.isInstalling}
 						>
 							<!-- <span
 								class="absolute inset-0 -z-[1] rounded-xl"
@@ -97,10 +68,10 @@
 							 -->
 							<GradientBg class="absolute inset-0 -z-[1] rounded-xl" />
 							<span class="absolute inset-0 -z-[1] rounded-xl bg-accent/15"></span>
-							{#if !isInstalling}
+							{#if !$pwa.isInstalling}
 								Install Now
 							{/if}
-							{#if isInstalling}
+							{#if $pwa.isInstalling}
 								<Spinner class="absolute h-4 w-4" />
 							{/if}
 						</Button>
