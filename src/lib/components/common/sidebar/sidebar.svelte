@@ -56,9 +56,9 @@
 			<span class="sr-only">Add a new Room</span>
 		</Button>
 	</div>
-	<ul class="-mx-3 space-y-0.5 text-sm">
+	<ul class="-mx-3 overflow-y-auto overflow-x-hidden text-sm">
 		{#each rooms as room}
-			<li class="flex overflow-hidden">
+			<li class="flex overflow-hidden py-0.5">
 				<a href={'/room/' + room.id} class="w-full">
 					<Tooltip openDelay={200}>
 						<TooltipTrigger

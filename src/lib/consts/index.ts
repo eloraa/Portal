@@ -131,5 +131,84 @@ export const rooms = [
 	{ id: 'n5Lt6RFm', name: 'CheerfulButterfly' },
 	{ id: '5LgXxkNV', name: 'PeacefulCookie' },
 	{ id: 'QVAngyYX', name: 'FriendlyMeadow' },
-	
+	{
+		name: 'PeacefulSun',
+		id: 'ojC2RCFh'
+	},
+	{
+		name: 'SillyOcean',
+		id: 'WpVhZ0v2'
+	},
+	{
+		name: 'UpbeatKitten',
+		id: '5TYrqj9v'
+	},
+	{
+		name: 'UpbeatStar',
+		id: 'ehnUPDFl'
+	},
+	{
+		name: 'PeacefulMeadow',
+		id: 'f1T1RfbP'
+	},
+	{
+		name: 'UpbeatPhoenix',
+		id: 'Wj2ONhKg'
+	},
+	{
+		name: 'BrightMoon',
+		id: 'Cy1WESYl'
+	},
+	{
+		name: 'MagicalValley',
+		id: 'Hnh8h8oS'
+	},
+	{
+		name: 'LivelyMoon',
+		id: 'ZoTefCbb'
+	},
+	{
+		name: 'DreamyBird',
+		id: 'A8kwtq69'
+	},
+	{
+		name: 'PeacefulKitten',
+		id: 'LSWdP4FZ'
+	},
+	{
+		name: 'CheerfulKitten',
+		id: 'OgFG8Ql8'
+	},
+	{
+		name: 'CheerfulMountain',
+		id: '4mbPkysM'
+	},
+	{
+		name: 'DancingStar',
+		id: 'WhcRetuV'
+	},
+	{
+		name: 'UpbeatRiver',
+		id: 'UQyPyHn0'
+	},
+	{
+		name: 'BouncyMoon',
+		id: 'vRnYsWmT'
+	},
+	{
+		name: 'VibrantGarden',
+		id: 'ouIqLXul'
+	},
+	{
+		name: 'AdorableCookie',
+		id: 'BcurvJCg'
+	},
+	{
+		name: 'PeacefulRiver',
+		id: 'HUmHPdX3'
+	},
+	{
+		name: 'AdorableSun',
+		id: 'Q3nkP0tc'
+	}
 ];
