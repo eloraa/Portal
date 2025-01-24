@@ -6,6 +6,7 @@
 	export let speed = 10;
 	export let moveSpeed = 0.2;
 	export let className = '';
+	export let animationState = true;
 
 	let rotation = 0;
 	let xPosition = 50;
@@ -24,6 +25,8 @@
 	}
 
 	function animate() {
+		if (!animationState) return;
+		
 		rotation = (rotation + speed * 0.016) % 360;
 
 		xPosition += xVelocity;
@@ -43,7 +46,9 @@
 
 	onMount(() => {
 		if (browser) {
-			animationFrameId = window.requestAnimationFrame(animate);
+			if (!animationFrameId) {
+				animationFrameId = window.requestAnimationFrame(animate);
+			}
 
 			resizeObserver = new ResizeObserver(updateHeight);
 			resizeObserver.observe(gradientDiv.parentElement!);
@@ -54,7 +59,10 @@
 
 	onDestroy(() => {
 		if (browser) {
-			window.cancelAnimationFrame(animationFrameId);
+			if (animationFrameId) {
+				window.cancelAnimationFrame(animationFrameId);
+				animationFrameId = 0;
+			}
 			if (resizeObserver) {
 				resizeObserver.disconnect();
 			}
@@ -79,6 +87,17 @@
 			return `rotate(90deg) ${existingTransform} ${inlineTransform}`.trim();
 		}
 	})();
+
+	$: if (browser && animationState) {
+		if (!animationFrameId) {
+			animationFrameId = window.requestAnimationFrame(animate);
+		}
+	} else if (browser && !animationState) {
+		if (animationFrameId) {
+			window.cancelAnimationFrame(animationFrameId);
+			animationFrameId = 0;
+		}
+	}
 </script>
 
 <div
