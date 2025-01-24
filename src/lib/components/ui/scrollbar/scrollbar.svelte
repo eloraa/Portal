@@ -17,6 +17,7 @@
 	let scrollPercentage = $state(0);
 	let targetPercentage = $state(0);
 	let animationFrame: number;
+	let isReady = $state(false);
 
 	function updateThumbPosition() {
 		if (Math.abs(targetPercentage - scrollPercentage) < 0.1) {
@@ -132,18 +133,20 @@
 
 	$effect(() => {
 		if (container) {
-			updateScrollPercentage(); // Initial calculation
-
+			updateScrollPercentage(); 
 			container.addEventListener('scroll', updateScrollPercentage, { passive: true });
+
+			isReady = true;
 
 			return () => {
 				container.removeEventListener('scroll', updateScrollPercentage);
+				isReady = false;
 			};
 		}
 	});
 
 	onMount(() => {
-		updateScrollPercentage(); // Initial calculation
+		updateScrollPercentage(); 
 
 		document.addEventListener('mousemove', handleScrollbarMouseMove);
 		document.addEventListener('mouseup', handleScrollbarMouseUp);
@@ -166,88 +169,90 @@
 	});
 </script>
 
-{#if orientation === 'horizontal'}
-	<div
-		class={cn(
-			'relative h-5 w-full cursor-pointer rounded-xl bg-muted hover:bg-muted/80',
-			className
-		)}
-		role="scrollbar"
-		tabindex="0"
-		aria-controls={container?.id || 'scrollable-content'}
-		aria-valuenow={scrollPercentage}
-		aria-valuemin="0"
-		aria-valuemax="100"
-		onmousedown={handleScrollbarClick}
-	>
-		<button
-			class="absolute top-1/2 -translate-y-1/2 cursor-grab select-none items-center justify-center rounded-xl bg-accent/5 px-2 text-xs uppercase backdrop-blur-xl active:cursor-grabbing active:bg-primary/15"
-			style="left: {scrollPercentage}%; transform: translateX(-{scrollPercentage}%) translateY(-50%)"
-			bind:this={scrollbarThumb}
-			onmousedown={handleScrollbarMouseDown}
-			ontouchstart={handleScrollbarMouseDown}
+{#if isReady}
+	{#if orientation === 'horizontal'}
+		<div
+			class={cn(
+				'relative h-5 w-full cursor-pointer rounded-xl bg-muted hover:bg-muted/80',
+				className
+			)}
+			role="scrollbar"
+			tabindex="0"
+			aria-controls={container?.id || 'scrollable-content'}
+			aria-valuenow={scrollPercentage}
+			aria-valuemin="0"
+			aria-valuemax="100"
+			onmousedown={handleScrollbarClick}
 		>
-			scroll
-		</button>
-		{#each Array(11) as _, i}
-			<div
-				class={cn(
-					'absolute top-1/2 w-[1px] -translate-y-1/2 bg-foreground/20 transition-all duration-75'
-				)}
-				style="
-                    left: {i * 10}%;
-                    height: {(() => {
-					const offset = 5;
-					const distance = Math.abs(i * 10 - (scrollPercentage + offset));
-					if (distance === 0) return '24px';
-					if (distance <= 10) return '12px';
-					if (distance <= 20) return '8px';
-					return '4px';
-				})()};
-                "
-			></div>
-		{/each}
-	</div>
-{:else}
-	<div
-		class={cn(
-			'relative h-full w-3.5 cursor-pointer rounded-xl bg-muted/60 hover:bg-muted/80',
-			className
-		)}
-		role="scrollbar"
-		tabindex="0"
-		aria-controls={container?.id || 'scrollable-content'}
-		aria-valuenow={scrollPercentage}
-		aria-valuemin="0"
-		aria-valuemax="100"
-		onmousedown={handleScrollbarClick}
-	>
-		<button
-			class="absolute left-1/2 flex h-auto w-auto -translate-x-1/2 cursor-grab select-none items-center justify-center rounded-xl bg-accent/5 px-2 py-8 text-xs uppercase backdrop-blur-xl active:cursor-grabbing active:bg-primary/15"
-			style="top: {scrollPercentage}%; transform: translateY(-{scrollPercentage}%) translateX(-50%)"
-			bind:this={scrollbarThumb}
-			onmousedown={handleScrollbarMouseDown}
-			ontouchstart={handleScrollbarMouseDown}
+			<button
+				class="absolute top-1/2 -translate-y-1/2 cursor-grab select-none items-center justify-center rounded-xl bg-accent/5 px-2 text-xs uppercase backdrop-blur-xl active:cursor-grabbing active:bg-primary/15"
+				style="left: {scrollPercentage}%; transform: translateX(-{scrollPercentage}%) translateY(-50%)"
+				bind:this={scrollbarThumb}
+				onmousedown={handleScrollbarMouseDown}
+				ontouchstart={handleScrollbarMouseDown}
+			>
+				scroll
+			</button>
+			{#each Array(11) as _, i}
+				<div
+					class={cn(
+						'absolute top-1/2 w-[1px] -translate-y-1/2 bg-foreground/20 transition-all duration-75'
+					)}
+					style="
+						left: {i * 10}%;
+						height: {(() => {
+						const offset = 5;
+						const distance = Math.abs(i * 10 - (scrollPercentage + offset));
+						if (distance === 0) return '24px';
+						if (distance <= 10) return '12px';
+						if (distance <= 20) return '8px';
+						return '4px';
+					})()};
+					"
+				></div>
+			{/each}
+		</div>
+	{:else}
+		<div
+			class={cn(
+				'relative h-full w-3.5 cursor-pointer rounded-xl bg-muted/60 hover:bg-muted/80',
+				className
+			)}
+			role="scrollbar"
+			tabindex="0"
+			aria-controls={container?.id || 'scrollable-content'}
+			aria-valuenow={scrollPercentage}
+			aria-valuemin="0"
+			aria-valuemax="100"
+			onmousedown={handleScrollbarClick}
 		>
-			<span class="absolute block rotate-90">scroll</span>
-		</button>
-		{#each Array(11) as _, i}
-			<div
-				class={cn(
-					'absolute left-1/2 h-[1px] -translate-x-1/2 bg-foreground/20 transition-all duration-75'
-				)}
-				style="
-                    top: {i * 10}%;
-                    width: {(() => {
-					const offset = 5;
-					const distance = Math.abs(i * 10 - (scrollPercentage + offset));
-					if (distance === 0) return '24px';
-					if (distance <= 10) return '12px';
-					if (distance <= 20) return '8px';
-					return '4px';
-				})()};
-                "
-			></div>
-		{/each}
-	</div>
+			<button
+				class="absolute left-1/2 flex h-auto w-auto -translate-x-1/2 cursor-grab select-none items-center justify-center rounded-xl bg-accent/5 px-2 py-8 text-xs uppercase backdrop-blur-xl active:cursor-grabbing active:bg-primary/15"
+				style="top: {scrollPercentage}%; transform: translateY(-{scrollPercentage}%) translateX(-50%)"
+				bind:this={scrollbarThumb}
+				onmousedown={handleScrollbarMouseDown}
+				ontouchstart={handleScrollbarMouseDown}
+			>
+				<span class="absolute block rotate-90">scroll</span>
+			</button>
+			{#each Array(11) as _, i}
+				<div
+					class={cn(
+						'absolute left-1/2 h-[1px] -translate-x-1/2 bg-foreground/20 transition-all duration-75'
+					)}
+					style="
+						top: {i * 10}%;
+						width: {(() => {
+						const offset = 5;
+						const distance = Math.abs(i * 10 - (scrollPercentage + offset));
+						if (distance === 0) return '24px';
+						if (distance <= 10) return '12px';
+						if (distance <= 20) return '8px';
+						return '4px';
+					})()};
+					"
+				></div>
+			{/each}
+		</div>
+	{/if}
 {/if}
