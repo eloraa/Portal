@@ -18,7 +18,7 @@
 	let roomListContainer = $state<HTMLElement | null>(null);
 </script>
 
-<div class="w-sidebar relative top-16 flex h-[calc(100vh-4rem)] flex-col px-4 max-md:hidden">
+<div class="w-sidebar relative top-16 flex h-[calc(100%-4rem)] flex-col px-4 max-md:hidden">
 	<ul class="-mx-3">
 		<li>
 			<a href="/dashboard">
@@ -73,7 +73,7 @@
 		</div>
 		{#each rooms as room}
 			<li class="flex overflow-hidden py-0.5">
-				<a href={'/room/' + room.id} class="w-full">
+				<a href={'/room/' + room.id} class="flex w-full">
 					<Tooltip openDelay={200}>
 						<TooltipTrigger
 							class={cn(
@@ -82,9 +82,9 @@
 								page.params?.id === room.id && 'bg-accent/5'
 							)}
 						>
-							{room.name}
+							<span class={cn('max-w-full', room.name.length > 14 && 'truncate')}>{room.name}</span>
 							<span
-								class="min-w-0 truncate border p-0.5 font-mono text-xs leading-tight text-foreground/80 dark:text-foreground/60"
+								class="min-w-[1ch] truncate border p-0.5 font-mono text-xs leading-tight text-foreground/80 dark:text-foreground/60"
 								>{room.id}</span
 							>
 						</TooltipTrigger>

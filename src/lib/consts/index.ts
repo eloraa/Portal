@@ -200,6 +200,10 @@ export const rooms = [
 		id: 'ouIqLXul'
 	},
 	{
+		name: 'VibrantGarden VibrantGarden VibrantGardenVibrantGardenVibrantGarden',
+		id: 'ouIqLXu0'
+	},
+	{
 		name: 'AdorableCookie',
 		id: 'BcurvJCg'
 	},

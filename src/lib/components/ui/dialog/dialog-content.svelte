@@ -25,7 +25,7 @@
 		{transition}
 		{transitionConfig}
 		class={cn(
-			'fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border bg-popover/85 p-4 shadow-2xl backdrop-blur-xl md:w-full md:max-w-lg',
+			'fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border bg-popover/85 p-4 shadow-2xl backdrop-blur-xl md:w-full md:max-w-sm',
 			className
 		)}
 		{...$$restProps}

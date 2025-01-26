@@ -277,7 +277,7 @@
 						<DropdownMenu>
 							<DropdownMenuTrigger class="flex w-full items-center gap-1 text-start">
 								{selectedTheme[0].toUpperCase() + selectedTheme.slice(1)}
-								<ChevronDown class="mt-1 w-4" />
+								<ChevronDown class="w-4" />
 							</DropdownMenuTrigger>
 							<DropdownMenuContent class="w-full max-w-52">
 								<DropdownMenuRadioGroup bind:value={selectedTheme}>
